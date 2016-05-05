@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "powered=false": { "model": "obsidianplates:mossyPressurePlateUp" },
+    "powered=true": { "model": "obsidianplates:mossyPressurePlateDown" },
+    "inventory": { "model": "obsidianplates:mossyPressurePlateInventory"}
+  }
+}
