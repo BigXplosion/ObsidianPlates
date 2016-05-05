@@ -8,9 +8,13 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import com.bigxplosion.obsidianplates.block.BlockMossyPressurePlate;
 import com.bigxplosion.obsidianplates.block.BlockObsidianPressurePlate;
+import com.bigxplosion.obsidianplates.block.EnumPressurePlateType;
+import com.bigxplosion.obsidianplates.item.ItemBlockCustomPressurePlate;
 import com.bigxplosion.obsidianplates.lib.Reference;
 import com.bigxplosion.obsidianplates.proxy.CommonProxy;
 
@@ -29,13 +33,35 @@ public class ObsidianPlates {
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		obsidianPressurePlate = new BlockObsidianPressurePlate();
-		GameRegistry.registerBlock(obsidianPressurePlate, "obsidianplates:obsidianPressurePlate");
-		PROXY.registerInventoryModel(obsidianPressurePlate, "obsidianPressurePlate");
-		GameRegistry.addRecipe(new ItemStack(obsidianPressurePlate), "OO", 'O', new ItemStack(Blocks.obsidian));
+		registerBlock(obsidianPressurePlate, "obsidianplates:obsidianPressurePlate");
+		registerInventoryModels(obsidianPressurePlate, "obsidianPressurePlate");
+		registerRecipes(obsidianPressurePlate, Blocks.obsidian);
 
 		mossyPressurePlate = new BlockMossyPressurePlate();
-		GameRegistry.registerBlock(mossyPressurePlate, "obsidianplates:mossyPressurePlate");
-		PROXY.registerInventoryModel(mossyPressurePlate, "mossyPressurePlate");
-		GameRegistry.addRecipe(new ItemStack(mossyPressurePlate), "MM", 'M', new ItemStack(Blocks.mossy_cobblestone));
+		registerBlock(mossyPressurePlate, "obsidianplates:mossyPressurePlate");
+		registerInventoryModels(mossyPressurePlate, "mossyPressurePlate");
+		registerRecipes(mossyPressurePlate, Blocks.mossy_cobblestone);
+	}
+
+	private void registerBlock(Block block, String name) {
+		GameRegistry.registerBlock(block, ItemBlockCustomPressurePlate.class, name);
+	}
+
+	private void registerInventoryModels(Block block, String name) {
+		PROXY.registerInventoryModel(block, EnumPressurePlateType.NORMAL.getMeta(), name);
+		PROXY.registerInventoryModel(block, EnumPressurePlateType.SILENT.getMeta(), name);
+		PROXY.registerInventoryModel(block, EnumPressurePlateType.SHROUDED.getMeta(), name, "inventory_shrouded");
+		PROXY.registerInventoryModel(block, EnumPressurePlateType.BOTH.getMeta(), name, "inventory_shrouded");
+	}
+
+	private void registerRecipes(Block result, Block base) {
+		GameRegistry.addRecipe(new ItemStack(result), "XX", 'X', new ItemStack(base));
+
+		GameRegistry.addRecipe(new ItemStack(result, 1, EnumPressurePlateType.SILENT.getMeta()), "X", "W", 'W', new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), 'X', new ItemStack(result, 1, EnumPressurePlateType.NORMAL.getMeta()));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(result, 1, EnumPressurePlateType.SHROUDED.getMeta()), "QGQ", "GXG", "QGQ", 'Q', "gemQuartz", 'G', "dustGlowstone", 'X', new ItemStack(result, 1, EnumPressurePlateType.NORMAL.getMeta())));
+
+		GameRegistry.addRecipe(new ItemStack(result, 1, EnumPressurePlateType.BOTH.getMeta()), "X", "W", 'W', new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), 'X', new ItemStack(result, 1, EnumPressurePlateType.SHROUDED.getMeta()));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(result, 1, EnumPressurePlateType.BOTH.getMeta()), "QGQ", "GXG", "QGQ", 'Q', "gemQuartz", 'G', "dustGlowstone", 'X', new ItemStack(result, 1, EnumPressurePlateType.SILENT.getMeta())));
 	}
 }

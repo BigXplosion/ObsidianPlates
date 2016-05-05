@@ -1,2 +1,9 @@
-tile.obsidianPressurePlate.name=Obsidian Pressure Plate
-tile.mossyPressurePlate.name=Mossy CobbleStone Pressure Plate
+tile.obsidianPressurePlate.normal.name=Obsidian Pressure Plate
+tile.obsidianPressurePlate.silent.name=Obsidian Pressure Plate (Silent)
+tile.obsidianPressurePlate.shrouded.name=Obsidian Pressure Plate (Shrouded)
+tile.obsidianPressurePlate.both.name=Obsidian Pressure Plate (Silent & Shrouded)
+
+tile.mossyPressurePlate.normal.name=Mossy CobbleStone Pressure Plate
+tile.mossyPressurePlate.silent.name=Mossy CobbleStone Pressure Plate (Silent)
+tile.mossyPressurePlate.shrouded.name=Mossy CobbleStone Pressure Plate (Shrouded)
+tile.mossyPressurePlate.both.name=Mossy CobbleStone Pressure Plate (Silent & Shrouded)

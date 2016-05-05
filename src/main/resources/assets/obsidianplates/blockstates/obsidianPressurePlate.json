@@ -1,7 +1,14 @@
 {
   "variants": {
-    "powered=false": { "model": "obsidianplates:obsidianPressurePlateUp" },
-    "powered=true": { "model": "obsidianplates:obsidianPressurePlateDown" },
-    "inventory": { "model": "obsidianplates:obsidianPressurePlateInventory"}
+    "powered=false,type=normal": { "model": "obsidianplates:obsidianPressurePlateUp" },
+    "powered=true,type=normal": { "model": "obsidianplates:obsidianPressurePlateDown" },
+    "powered=false,type=silent": { "model": "obsidianplates:obsidianPressurePlateUp" },
+    "powered=true,type=silent": { "model": "obsidianplates:obsidianPressurePlateDown" },
+    "powered=false,type=shrouded": { "model": "obsidianplates:obsidianPressurePlateUpShrouded" },
+    "powered=true,type=shrouded": { "model": "obsidianplates:obsidianPressurePlateDownShrouded" },
+    "powered=false,type=both": { "model": "obsidianplates:obsidianPressurePlateUpShrouded" },
+    "powered=true,type=both": { "model": "obsidianplates:obsidianPressurePlateDownShrouded" },
+    "inventory": { "model": "obsidianplates:obsidianPressurePlateInventory"},
+    "inventory_shrouded": { "model": "obsidianplates:obsidianPressurePlateInventoryShrouded"}
   }
 }

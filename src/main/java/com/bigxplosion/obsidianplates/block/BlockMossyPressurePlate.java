@@ -2,22 +2,27 @@ package com.bigxplosion.obsidianplates.block;
 
 import java.util.List;
 
-import net.minecraft.block.BlockPressurePlate;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockMossyPressurePlate extends BlockPressurePlate {
+public class BlockMossyPressurePlate extends BlockCustomPressurePlate {
 
-	public BlockMossyPressurePlate() {
-		super(Material.rock, Sensitivity.MOBS);
-		this.setUnlocalizedName("mossyPressurePlate");
-		this.setHardness(2f);
-		this.setResistance(10f);
-		this.setStepSound(soundTypeStone);
+	@Override
+	public String getName() {
+		return "mossyPressurePlate";
+	}
+
+	@Override
+	public float getHardness() {
+		return 2f;
+	}
+
+	@Override
+	public float getResistance() {
+		return 10f;
 	}
 
 	@Override
