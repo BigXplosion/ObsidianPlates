@@ -55,12 +55,16 @@ public class ObsidianPlates {
 	}
 
 	private void registerRecipes(Block result, Block base) {
+		//Normal
 		GameRegistry.addRecipe(new ItemStack(result), "XX", 'X', new ItemStack(base));
 
+		//Silent
 		GameRegistry.addRecipe(new ItemStack(result, 1, EnumPressurePlateType.SILENT.getMeta()), "X", "W", 'W', new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), 'X', new ItemStack(result, 1, EnumPressurePlateType.NORMAL.getMeta()));
 
+		//Shrouded
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(result, 1, EnumPressurePlateType.SHROUDED.getMeta()), "QGQ", "GXG", "QGQ", 'Q', "gemQuartz", 'G', "dustGlowstone", 'X', new ItemStack(result, 1, EnumPressurePlateType.NORMAL.getMeta())));
 
+		//Both
 		GameRegistry.addRecipe(new ItemStack(result, 1, EnumPressurePlateType.BOTH.getMeta()), "X", "W", 'W', new ItemStack(Blocks.wool, 1, OreDictionary.WILDCARD_VALUE), 'X', new ItemStack(result, 1, EnumPressurePlateType.SHROUDED.getMeta()));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(result, 1, EnumPressurePlateType.BOTH.getMeta()), "QGQ", "GXG", "QGQ", 'Q', "gemQuartz", 'G', "dustGlowstone", 'X', new ItemStack(result, 1, EnumPressurePlateType.SILENT.getMeta())));
 	}

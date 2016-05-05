@@ -3,6 +3,8 @@ package com.bigxplosion.obsidianplates.block;
 import net.minecraft.util.IStringSerializable;
 
 /**
+ * Never use ordinal()! always use getMeta()!
+ *
  * 0 = normal, powered off
  * 1 = normal, powered on
  * 2 = silent, powered off
