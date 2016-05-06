@@ -1,14 +1,28 @@
 {
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:pressure_plate_up",
+    "textures": { "texture": "minecraft:blocks/obsidian" }
+  },
   "variants": {
-    "powered=false,type=normal": { "model": "obsidianplates:obsidianPressurePlateUp" },
-    "powered=true,type=normal": { "model": "obsidianplates:obsidianPressurePlateDown" },
-    "powered=false,type=silent": { "model": "obsidianplates:obsidianPressurePlateUp" },
-    "powered=true,type=silent": { "model": "obsidianplates:obsidianPressurePlateDown" },
-    "powered=false,type=shrouded": { "model": "obsidianplates:obsidianPressurePlateUpShrouded" },
-    "powered=true,type=shrouded": { "model": "obsidianplates:obsidianPressurePlateDownShrouded" },
-    "powered=false,type=both": { "model": "obsidianplates:obsidianPressurePlateUpShrouded" },
-    "powered=true,type=both": { "model": "obsidianplates:obsidianPressurePlateDownShrouded" },
-    "inventory": { "model": "obsidianplates:obsidianPressurePlateInventory"},
-    "inventory_shrouded": { "model": "obsidianplates:obsidianPressurePlateInventoryShrouded"}
+    "powered": {
+      "false": {},
+      "true": { "model": "minecraft:pressure_plate_down" }
+    },
+    "silent": {
+      "false": {},
+      "true": {}
+    },
+    "shrouded": {
+      "false": {},
+      "true": { "textures": { "texture": "obsidianplates:blocks/obsidianShrouded" } }
+    },
+    "inventory": {
+      "model": "minecraft:pressure_plate_up"
+    },
+    "inventory_shrouded": {
+      "model": "minecraft:pressure_plate_up",
+      "textures": { "texture": "obsidianplates:blocks/obsidianShrouded" }
+    }
   }
 }

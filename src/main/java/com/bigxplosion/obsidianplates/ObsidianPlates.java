@@ -35,7 +35,7 @@ public class ObsidianPlates {
 	public void preInit(FMLPreInitializationEvent event) {
 		obsidianPressurePlate = new BlockObsidianPressurePlate();
 		registerBlock(obsidianPressurePlate);
-		//registerInventoryModels(obsidianPressurePlate, "obsidianPressurePlate");
+		registerInventoryModels(obsidianPressurePlate, "obsidianPressurePlate");
 		registerRecipes(obsidianPressurePlate, Blocks.OBSIDIAN);
 
 		mossyPressurePlate = new BlockMossyPressurePlate();

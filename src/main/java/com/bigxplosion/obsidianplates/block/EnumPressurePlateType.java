@@ -1,5 +1,6 @@
 package com.bigxplosion.obsidianplates.block;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.IStringSerializable;
 
 /**
@@ -35,8 +36,29 @@ public enum EnumPressurePlateType implements IStringSerializable {
 		return ordinal() * 2;
 	}
 
-	public boolean isSilent() {
-		return getMeta() == 2 || getMeta() == 6;
+	public static boolean isSilent(int meta) {
+		return meta == SILENT.getMeta() || meta == BOTH.getMeta();
+	}
+
+	public static boolean isShrouded(int meta) {
+		return meta == SHROUDED.getMeta() || meta == BOTH.getMeta();
+	}
+
+	public static boolean isPowered(int meta) {
+		return (meta % 2) != 0;
+	}
+
+	public static int getMetaFromStateNoPower(IBlockState state) {
+		int meta = 0;
+
+		if (state.getValue(BlockCustomPressurePlate.SILENT) && state.getValue(BlockCustomPressurePlate.SHROUDED))
+			meta = BOTH.getMeta();
+		else if (state.getValue(BlockCustomPressurePlate.SILENT))
+			meta = SILENT.getMeta();
+		else if (state.getValue(BlockCustomPressurePlate.SHROUDED))
+			meta = SHROUDED.getMeta();
+
+		return meta;
 	}
 
 	public static EnumPressurePlateType fromMeta(int meta) {

@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -32,7 +32,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public abstract class BlockCustomPressurePlate extends BlockPressurePlate  {
 
-	public static final PropertyEnum<EnumPressurePlateType> TYPE = PropertyEnum.create("type", EnumPressurePlateType.class);
+	public static final PropertyBool SILENT = PropertyBool.create("silent");
+	public static final PropertyBool SHROUDED = PropertyBool.create("shrouded");
 
 	public BlockCustomPressurePlate() {
 		super(Material.ROCK, Sensitivity.MOBS);
@@ -41,7 +42,7 @@ public abstract class BlockCustomPressurePlate extends BlockPressurePlate  {
 		this.setHardness(getHardness());
 		this.setResistance(getResistance());
 		this.setSoundType(SoundType.STONE);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(POWERED, false).withProperty(TYPE, EnumPressurePlateType.NORMAL));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(POWERED, false).withProperty(SILENT, false).withProperty(SHROUDED, false));
 	}
 
 	public abstract String getName();
@@ -55,20 +56,30 @@ public abstract class BlockCustomPressurePlate extends BlockPressurePlate  {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, POWERED, TYPE);
+		return new BlockStateContainer(this, POWERED, SILENT, SHROUDED);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(TYPE).getMeta() + (state.getValue(POWERED) ? 1 : 0);
+		int meta = 0;
+
+		if (state.getValue(SILENT) && state.getValue(SHROUDED))
+			meta = EnumPressurePlateType.BOTH.getMeta();
+		else if (state.getValue(SILENT))
+			meta = EnumPressurePlateType.SILENT.getMeta();
+		else if (state.getValue(SHROUDED))
+			meta = EnumPressurePlateType.SHROUDED.getMeta();
+		if (state.getValue(POWERED))
+			meta += 1;
+
+		return meta;
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(TYPE, EnumPressurePlateType.fromMeta(meta)).withProperty(POWERED, (meta % 2) != 0);
+		return this.getDefaultState().withProperty(SILENT, EnumPressurePlateType.isSilent(meta)).withProperty(SHROUDED, EnumPressurePlateType.isShrouded(meta)).withProperty(POWERED, EnumPressurePlateType.isPowered(meta));
 	}
 
-	/*@Override
 	protected void updateState(World world, BlockPos pos, IBlockState state, int oldRedstoneStrength) {
 		int i = this.computeRedstoneStrength(world, pos);
 		boolean flag = oldRedstoneStrength > 0;
@@ -81,32 +92,7 @@ public abstract class BlockCustomPressurePlate extends BlockPressurePlate  {
 			world.markBlockRangeForRenderUpdate(pos, pos);
 		}
 
-		if (!state.getValue(TYPE).isSilent()) {
-			if (!flag1 && flag) {
-				world.playSoundEffect((double) pos.getX() + 0.5D, (double) pos.getY() + 0.1D, (double) pos.getZ() + 0.5D, "random.click", 0.3F, 0.5F);
-			} else if (flag1 && !flag) {
-				world.playSoundEffect((double) pos.getX() + 0.5D, (double) pos.getY() + 0.1D, (double) pos.getZ() + 0.5D, "random.click", 0.3F, 0.6F);
-			}
-		}
-
-		if (flag1) {
-			world.scheduleUpdate(pos, this, this.tickRate(world));
-		}
-	}*/
-
-	protected void updateState(World world, BlockPos pos, IBlockState state, int oldRedstoneStrength) {
-		int i = this.computeRedstoneStrength(world, pos);
-		boolean flag = oldRedstoneStrength > 0;
-		boolean flag1 = i > 0;
-
-		if (oldRedstoneStrength != i) {
-			state = this.setRedstoneStrength(state, i);
-			world.setBlockState(pos, state, 2);
-			this.updateNeighbors(world, pos);
-			world.markBlockRangeForRenderUpdate(pos, pos);
-		}
-
-		if (!state.getValue(TYPE).isSilent()) {
+		if (!state.getValue(SILENT)) {
 			if (! flag1 && flag)
 				this.playClickOffSound(world, pos);
 			else if (flag1 && ! flag)
@@ -119,12 +105,12 @@ public abstract class BlockCustomPressurePlate extends BlockPressurePlate  {
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(world.getBlockState(pos).getBlock(), 1, world.getBlockState(pos).getValue(TYPE).getMeta());
+		return new ItemStack(world.getBlockState(pos).getBlock(), 1, EnumPressurePlateType.getMetaFromStateNoPower(world.getBlockState(pos)));
 	}
 
 	@Override
 	public int damageDropped(IBlockState state) {
-		return getMetaFromState(state);
+		return EnumPressurePlateType.getMetaFromStateNoPower(state);
 	}
 
 	@Override

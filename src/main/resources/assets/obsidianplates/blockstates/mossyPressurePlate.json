@@ -1,6 +1,28 @@
 {
   "forge_marker": 1,
   "defaults": {
-    ""
+    "model": "minecraft:pressure_plate_up",
+    "textures": { "texture": "minecraft:blocks/cobblestone_mossy" }
+  },
+  "variants": {
+    "powered": {
+      "false": {},
+      "true": { "model": "minecraft:pressure_plate_down" }
+    },
+    "silent": {
+      "false": {},
+      "true": {}
+    },
+    "shrouded": {
+      "false": {},
+      "true": { "textures": { "texture": "obsidianplates:blocks/mossyShrouded" } }
+    },
+    "inventory": {
+      "model": "minecraft:pressure_plate_up"
+    },
+    "inventory_shrouded": {
+      "model": "minecraft:pressure_plate_up",
+      "textures": { "texture": "obsidianplates:blocks/mossyShrouded" }
+    }
   }
 }
