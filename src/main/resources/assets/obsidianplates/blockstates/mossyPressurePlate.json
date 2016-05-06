@@ -1,14 +1,6 @@
 {
-  "variants": {
-    "powered=false,type=normal": { "model": "obsidianplates:mossyPressurePlateUp" },
-    "powered=true,type=normal": { "model": "obsidianplates:mossyPressurePlateDown" },
-    "powered=false,type=silent": { "model": "obsidianplates:mossyPressurePlateUp" },
-    "powered=true,type=silent": { "model": "obsidianplates:mossyPressurePlateDown" },
-    "powered=false,type=shrouded": { "model": "obsidianplates:mossyPressurePlateUpShrouded" },
-    "powered=true,type=shrouded": { "model": "obsidianplates:mossyPressurePlateDownShrouded" },
-    "powered=false,type=both": { "model": "obsidianplates:mossyPressurePlateUpShrouded" },
-    "powered=true,type=both": { "model": "obsidianplates:mossyPressurePlateDownShrouded" },
-    "inventory": { "model": "obsidianplates:mossyPressurePlateInventory"},
-    "inventory_shrouded": { "model": "obsidianplates:mossyPressurePlateInventoryShrouded"}
+  "forge_marker": 1,
+  "defaults": {
+    ""
   }
 }

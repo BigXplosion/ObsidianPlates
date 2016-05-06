@@ -1,16 +1,17 @@
 package com.bigxplosion.obsidianplates.item;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import com.bigxplosion.obsidianplates.block.BlockCustomPressurePlate;
 import com.bigxplosion.obsidianplates.block.EnumPressurePlateType;
 
 public class ItemBlockCustomPressurePlate extends ItemBlock {
 
-	public ItemBlockCustomPressurePlate(Block block) {
+	public ItemBlockCustomPressurePlate(BlockCustomPressurePlate block) {
 		super(block);
 		this.setHasSubtypes(true);
+		this.setRegistryName("obsidianplates", block.getName());
 	}
 
 	@Override

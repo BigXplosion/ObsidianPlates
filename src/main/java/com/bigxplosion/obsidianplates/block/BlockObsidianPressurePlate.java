@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockObsidianPressurePlate extends BlockCustomPressurePlate {
@@ -26,7 +26,7 @@ public class BlockObsidianPressurePlate extends BlockCustomPressurePlate {
 
 	@Override
 	protected int computeRedstoneStrength(World world, BlockPos pos) {
-		List<? extends Entity> entities = world.getEntitiesWithinAABB(EntityPlayer.class, getSensitiveAABB(pos));
+		List<? extends Entity> entities = world.getEntitiesWithinAABB(EntityPlayer.class, PRESSURE_AABB.offset(pos));
 		if (!entities.isEmpty()) {
 			for (Entity ent : entities) {
 				if (!ent.doesEntityNotTriggerPressurePlate())

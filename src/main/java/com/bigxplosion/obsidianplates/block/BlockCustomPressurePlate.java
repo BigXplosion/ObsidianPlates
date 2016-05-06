@@ -3,17 +3,18 @@ package com.bigxplosion.obsidianplates.block;
 import java.util.List;
 
 import net.minecraft.block.BlockPressurePlate;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import net.minecraftforge.fml.relauncher.Side;
@@ -34,11 +35,12 @@ public abstract class BlockCustomPressurePlate extends BlockPressurePlate  {
 	public static final PropertyEnum<EnumPressurePlateType> TYPE = PropertyEnum.create("type", EnumPressurePlateType.class);
 
 	public BlockCustomPressurePlate() {
-		super(Material.rock, Sensitivity.MOBS);
+		super(Material.ROCK, Sensitivity.MOBS);
 		this.setUnlocalizedName(getName());
+		this.setRegistryName("obsidianplates", getName());
 		this.setHardness(getHardness());
 		this.setResistance(getResistance());
-		this.setStepSound(soundTypeStone);
+		this.setSoundType(SoundType.STONE);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(POWERED, false).withProperty(TYPE, EnumPressurePlateType.NORMAL));
 	}
 
@@ -52,8 +54,8 @@ public abstract class BlockCustomPressurePlate extends BlockPressurePlate  {
 	protected abstract int computeRedstoneStrength(World world, BlockPos pos);
 
 	@Override
-	protected BlockState createBlockState() {
-		return new BlockState(this, POWERED, TYPE);
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, POWERED, TYPE);
 	}
 
 	@Override
@@ -66,7 +68,7 @@ public abstract class BlockCustomPressurePlate extends BlockPressurePlate  {
 		return this.getDefaultState().withProperty(TYPE, EnumPressurePlateType.fromMeta(meta)).withProperty(POWERED, (meta % 2) != 0);
 	}
 
-	@Override
+	/*@Override
 	protected void updateState(World world, BlockPos pos, IBlockState state, int oldRedstoneStrength) {
 		int i = this.computeRedstoneStrength(world, pos);
 		boolean flag = oldRedstoneStrength > 0;
@@ -90,11 +92,34 @@ public abstract class BlockCustomPressurePlate extends BlockPressurePlate  {
 		if (flag1) {
 			world.scheduleUpdate(pos, this, this.tickRate(world));
 		}
+	}*/
+
+	protected void updateState(World world, BlockPos pos, IBlockState state, int oldRedstoneStrength) {
+		int i = this.computeRedstoneStrength(world, pos);
+		boolean flag = oldRedstoneStrength > 0;
+		boolean flag1 = i > 0;
+
+		if (oldRedstoneStrength != i) {
+			state = this.setRedstoneStrength(state, i);
+			world.setBlockState(pos, state, 2);
+			this.updateNeighbors(world, pos);
+			world.markBlockRangeForRenderUpdate(pos, pos);
+		}
+
+		if (!state.getValue(TYPE).isSilent()) {
+			if (! flag1 && flag)
+				this.playClickOffSound(world, pos);
+			else if (flag1 && ! flag)
+				this.playClickOnSound(world, pos);
+		}
+
+		if (flag1)
+			world.scheduleUpdate(new BlockPos(pos), this, this.tickRate(world));
 	}
 
 	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(getItem(world, target.getBlockPos()), 1, world.getBlockState(pos).getValue(TYPE).getMeta());
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return new ItemStack(world.getBlockState(pos).getBlock(), 1, world.getBlockState(pos).getValue(TYPE).getMeta());
 	}
 
 	@Override
@@ -113,7 +138,7 @@ public abstract class BlockCustomPressurePlate extends BlockPressurePlate  {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public EnumWorldBlockLayer getBlockLayer() {
-		return EnumWorldBlockLayer.TRANSLUCENT;
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.TRANSLUCENT;
 	}
 }
